@@ -1,64 +1,75 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔮 Free Personal Fortune - 2027 Reading</title><link rel="stylesheet" href="/css/style.css"></head><body>
-<nav><div class="nav-inner"><div><a href="/en/index.html" class="">Home</a><a href="#" class="active">Free Fortune</a></div>
-<div class="lang-switch"><a href="/ja/index.html">JA</a><a href="/zh/index.html">ZH</a><a href="/en/index.html">EN</a></div></div></nav>
-<div class="container"><header><h1>🔮 Free Personal Fortune - 2027 Reading</h1><p>Enter your birthdate to discover your zodiac sign and life path number.</p></header>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔮 無料パーソナル占卜 - 2027年運勢</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<div>
+<a href="/ja/index.html">ホーム</a>
+<a href="#" class="active">無料占卜</a>
+</div>
+<div class="lang-switch">
+<a href="?lang=ja">JA</a>
+<a href="?lang=zh">ZH</a>
+<a href="?lang=en">EN</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<header>
+<h1>🔮 無料パーソナル占卜</h1>
+<p>生年月日を入力するだけで、あなたの2027年運勢を診断します</p>
+</header>
+
 <div class="card">
 <div style="text-align:center; margin: 20px 0;">
-<label for="birthdate" style="display:block; margin-bottom:10px; font-size:1.1rem;">Birthdate</label>
+<label for="birthdate" style="display:block; margin-bottom:10px; font-size:1.1rem;">生年月日</label>
 <input type="date" id="birthdate" style="padding:12px; font-size:1rem; border-radius:8px; border:1px solid var(--border); background:var(--bg-card); color:var(--text); width:200px; text-align:center;">
 <br><br>
-<button onclick="showFortune()" style="padding:15px 40px; font-size:1.1rem; background:linear-gradient(135deg, var(--primary), var(--accent)); color:white; border:none; border-radius:25px; cursor:pointer;">Get My Fortune</button>
+<button onclick="generateFortune()" style="padding:15px 40px; font-size:1.1rem; background:linear-gradient(135deg, var(--primary), var(--accent)); color:white; border:none; border-radius:25px; cursor:pointer;">占卜を見る</button>
 </div>
 </div>
-<div id="result" class="card" style="display:none;">
-<h2>✨ Your 2027 Fortune</h2>
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0;">
-<div style="text-align:center; padding:20px; background:linear-gradient(135deg, rgba(107,78,230,0.2), rgba(177,156,217,0.2)); border-radius:12px;">
-<div style="font-size:2.5rem; margin-bottom:10px;" id="zodiac-icon">✨</div>
-<div style="color:var(--text-muted); font-size:0.9rem;">Zodiac Sign</div>
-<div style="font-size:1.3rem; font-weight:bold; margin-top:5px;" id="zodiac-name">-</div>
+
+<div id="result" class="card" style="display:none;"></div>
+
+<div class="ad-placeholder">
+Google AdSense 広告表示予定地
 </div>
-<div style="text-align:center; padding:20px; background:linear-gradient(135deg, rgba(255,215,0,0.15), rgba(107,78,230,0.2)); border-radius:12px;">
-<div style="font-size:2.5rem; margin-bottom:10px;" id="life-path-number">-</div>
-<div style="color:var(--text-muted); font-size:0.9rem;">Life Path Number</div>
-<div style="font-size:1.1rem; font-weight:bold; margin-top:5px;" id="life-path-name">-</div>
+
+<p style="text-align:center;"><a href="/ja/index.html">← ホームに戻る</a></p>
 </div>
-</div>
-<div id="fortune-text" style="margin-top:20px;"></div>
-<div style="text-align:center; margin-top:20px;">
-<a id="horoscope-link" href="#" class="lang-btn" style="display:inline-block; margin:5px;">Read Full Fortune →</a>
-</div>
-</div>
-<div class="ad-placeholder">Google AdSense</div>
-<p style="text-align:center;"><a href="/en/index.html">← Back to Home</a></p>
+<footer>
+© 2027 Fortune Insights. 運命を知り、未来を作る。
+</footer>
+<script src="/js/fortune.js"></script>
 <script>
-function showFortune() {
-    const dateInput = document.getElementById('birthdate').value;
-    if (!dateInput) { alert('Please select your birthdate'); return; }
-    const date = new Date(dateInput);
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    
-    // 星座判定
-    const zodiac = getZodiacSign(month, day);
-    document.getElementById('zodiac-icon').textContent = zodiac.icon;
-    document.getElementById('zodiac-name').textContent = zodiac.name;
-    
-    // ライフパス計算
-    const lifePath = calculateLifePathNumber(date.getFullYear(), month, day);
-    document.getElementById('life-path-number').textContent = lifePath;
-    document.getElementById('life-path-name').textContent = getLifePathName(lifePath);
-    
-    // 運勢テキスト
-    document.getElementById('fortune-text').innerHTML = renderFortune('en', zodiac.key, lifePath);
-    
-    // リンク設定
-    document.getElementById('horoscope-link').href = '/' + 'en' + '/horoscope/' + zodiac.key + '.html';
-    
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('result').scrollIntoView({{behavior: 'smooth'}});
-}}
-</script></div>
-<footer>© 2027 Fortune Insights. Know your fate, create your future.</footer><script src="/js/fortune.js"></script></body></html>
+// URLパラメタから言語を取得
+const urlParams = new URLSearchParams(window.location.search);
+const lang = urlParams.get('lang') || 'ja';
+document.documentElement.lang = lang;
+
+// 言語によってページテキストを変更
+const i18n = {
+  ja: { title: '無料パーソナル占卜 - 2027年運勢', desc: '生年月日を入力するだけで、あなたの2027年運勢を診断します', label: '生年月日', btn: '占卜を見る', back: '← ホームに戻る', home: '/ja/index.html' },
+  zh: { title: '免费个人占卜 - 2027年运势', desc: '输入出生年月日，即可获得你的2027年运势解读', label: '出生年月日', btn: '查看占卜', back: '← 返回首页', home: '/zh/index.html' },
+  en: { title: 'Free Personal Fortune - 2027 Reading', desc: 'Enter your birthdate to discover your zodiac sign and life path number.', label: 'Birthdate', btn: 'Get My Fortune', back: '← Back to Home', home: '/en/index.html' }
+};
+const t = i18n[lang] || i18n.ja;
+document.title = '🔮 ' + t.title;
+document.querySelector('header h1').textContent = '🔮 ' + t.title;
+document.querySelector('header p').textContent = t.desc;
+document.querySelector('label[for="birthdate"]').textContent = t.label;
+document.querySelector('button[onclick="generateFortune()"]').textContent = t.btn;
+document.querySelector('p a').textContent = t.back;
+document.querySelector('p a').href = t.home;
+
+// ナビゲーションのホームリンクも変更
+document.querySelector('nav a:not(.active)').href = t.home;
+</script>
+</body>
+</html>
