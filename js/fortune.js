@@ -134,5 +134,5 @@ function generateFortune() {
     </div>
   `;
   
-  resultDiv.classList.add('show');
+  resultDiv.style.display = 'block';
 }
